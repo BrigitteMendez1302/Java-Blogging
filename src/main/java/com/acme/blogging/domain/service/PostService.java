@@ -14,7 +14,7 @@ public interface PostService {
     //Envia una respuesta ante un request http
     //le dejamos lo que el controller tiene que responder
     //el controller recibe esto y lo transfiere hacia el exterior
-    ResponseEntity<?> deletePost();
+    ResponseEntity<?> deletePost(Long postId);
     Post assignPostTag(Long postId, Long tagId);
     Post unassignPostTag(Long postId, Long tagId);
     Page<Post> getAllPostsByTagId(Long tagId, Pageable pageable);
