@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +42,23 @@ public class PostsController {
                 .map(this::convertToResource)
                 .collect(Collectors.toList());
         return new PageImpl<>(resources, pageable, resources.size());
+    }
+
+    @PostMapping("/posts")
+    public PostResource createPost(@Valid @RequestBody SavePostResource resource){
+        Post post = convertToEntity(resource);
+        return convertToResource(postService.createPost(post));
+    }
+
+    @PutMapping("/posts/{postId}")
+    public PostResource updatePost(@PathVariable Long postId, @RequestBody SavePostResource resource){
+        Post post = convertToEntity(resource);
+        return convertToResource(postService.updatePost(postId, post));
+    }
+
+    @DeleteMapping("/posts/{postId}")
+    public ResponseEntity<?> deletePost(@PathVariable Long postId){
+        return postService.deletePost(postId);
     }
 
     private  Post convertToEntity(SavePostResource resource){
