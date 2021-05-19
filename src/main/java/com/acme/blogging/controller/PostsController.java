@@ -3,6 +3,10 @@ import com.acme.blogging.domain.model.Post;
 import com.acme.blogging.domain.service.PostService;
 import com.acme.blogging.resource.PostResource;
 import com.acme.blogging.resource.SavePostResource;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,6 +38,10 @@ public class PostsController {
     //Page<Post>Page<Post>
     //antes teniamos asi pero como ya lo cambiamos y añadimos
     //los resources, se modifican  y ahora si cumplen
+    @Operation(summary = "get posts", description = "Get all posts by page", tags={"posts"})
+    @ApiResponses(value={
+            @ApiResponse(responseCode = "200", description = "All Posts returned", content = @Content(mediaType = "application/json"))
+    })
     @GetMapping("/posts")
     public Page<PostResource> getAllPosts(Pageable pageable){
         Page<Post> postsPage = postService.getAllPosts(pageable);
